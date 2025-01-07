@@ -21,19 +21,46 @@ class Principale extends StatelessWidget {
         backgroundColor: Colors.green,
         centerTitle: true,
       ),
-      body: Center(
-        child: Container(
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            padding: EdgeInsets.all(50),
-            child: Text('Flutter')),
-      ),
+      body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(children: [
+              for (int i = 0; i < 3; i++) DataColumn(),
+            ]),
+            for (int i = 0; i < 3; i++) DataRow(),
+          ]),
       floatingActionButton: FloatingActionButton(
         onPressed: () => print('FloatingActionButton cliqué'),
         child: Icon(Icons.add),
       ),
+    );
+  }
+}
+
+class DataRow extends StatelessWidget {
+  const DataRow({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.blue,
+      padding: EdgeInsets.all(20),
+      width: 450,
+      child: Text('data'),
+    );
+  }
+}
+
+class DataColumn extends StatelessWidget {
+  const DataColumn({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.blue,
+      padding: EdgeInsets.all(20),
+      child: Text('data ligne'),
     );
   }
 }
