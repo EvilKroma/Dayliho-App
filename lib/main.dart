@@ -21,7 +21,15 @@ class Principale extends StatelessWidget {
         backgroundColor: Colors.green,
         centerTitle: true,
       ),
-      body: Center(child: Text('Psahtek')),
+      body: Center(
+        child: Container(
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            padding: EdgeInsets.all(50),
+            child: Text('Flutter')),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => print('FloatingActionButton cliqué'),
         child: Icon(Icons.add),
