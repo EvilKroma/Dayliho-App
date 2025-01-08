@@ -25,7 +25,6 @@ class _SecondPageState extends State<SecondPage> {
           icon: const Icon(Icons.logout),
         ),
         automaticallyImplyLeading: true, // Retire le bouton de retour
-        title: Center(child: Text("Planning de Janvier")),
       ),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
