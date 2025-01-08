@@ -22,31 +22,48 @@ class _FirstPageState extends State<FirstPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextFormField(
-              controller: _userEmail,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Email",
+            Padding(
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 100),
+              child: Text(
+                'Dayliho',
+                style: TextStyle(
+                    fontSize: 45,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 255, 168, 53)),
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty || !value.contains('@')) {
-                  return 'Veuillez entrer un email valide';
-                }
-                return null;
-              },
             ),
-            TextFormField(
-              controller: _userPassword,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Mot de passe",
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+              child: TextFormField(
+                controller: _userEmail,
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    label: Text('Email'),
+                    icon: Icon(Icons.email)),
+                validator: (value) {
+                  if (value == null || value.isEmpty || !value.contains('@')) {
+                    return 'Veuillez entrer un email valide';
+                  }
+                  return null;
+                },
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Mot de passe invalide';
-                }
-                return null;
-              },
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 30),
+              child: TextFormField(
+                controller: _userPassword,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  icon: Icon(Icons.lock_outline_rounded),
+                  label: Text('Mot de passe'),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Mot de passe invalide';
+                  }
+                  return null;
+                },
+              ),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -54,14 +71,15 @@ class _FirstPageState extends State<FirstPage> {
                   String email = _userEmail.text;
                   String password = _userPassword.text;
                   try {
-                    Map<String, dynamic> user =
+                    Map<String, dynamic> connectedUserData =
                         await Utilisateur.checkUser(email, password);
-                    if (user.isNotEmpty) {
+                    if (connectedUserData.isNotEmpty) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                SecondPage(firstValue: email, user: user)),
+                            builder: (context) => SecondPage(
+                                email: email,
+                                connectedUserData: connectedUserData)),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(

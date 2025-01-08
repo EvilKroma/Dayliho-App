@@ -12,7 +12,6 @@ class Utilisateur {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'mot_de_passe': password}),
       );
-      print("haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
       if (res.statusCode == 201) {
         print(res.body);
         return jsonDecode(res.body);
