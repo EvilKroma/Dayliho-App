@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/* Page entière */
 class SecondPage extends StatefulWidget {
   final String email;
   final Map<String, dynamic> connectedUserData;
@@ -16,7 +17,16 @@ class _SecondPageState extends State<SecondPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Utilisateur : ${widget.email}")),
+      backgroundColor: Colors.white, // Set background color to white
+      // appBar: AppBar(title: Text("Utilisateur : ${widget.email}")),
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.logout),
+        ),
+        automaticallyImplyLeading: true, // Retire le bouton de retour
+        title: Center(child: Text("Planning de Janvier")),
+      ),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
           setState(() {
@@ -27,97 +37,151 @@ class _SecondPageState extends State<SecondPage> {
         selectedIndex: currentPageIndex,
         destinations: const <Widget>[
           NavigationDestination(
-            // Bouton 1
             selectedIcon: Icon(Icons.home),
             icon: Icon(Icons.home_outlined),
             label: 'Accueil',
           ),
           NavigationDestination(
-            // Bouton 2
             icon: Badge(label: Text('3'), child: Icon(Icons.sports)),
             label: 'Séances',
           ),
           NavigationDestination(
-            // Bouton 3
             icon: Badge(
-              label: Text('2'), // Affiche le nombre de messages
+              label: Text('2'),
               child: Icon(Icons.account_box_sharp),
             ),
             label: 'Compte',
           ),
         ],
       ),
-      body: <Widget>[
-        // Tableau de widgets ayant chacun un index
-        // Page d'accueil
-        Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("Data: ${widget.connectedUserData}"),
-            ],
-          ),
-        ),
-        // Page Notifications
-        SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-                child: Text(
-                  'Séances à venir',
-                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
-                ),
-              ),
-              // Liste des cartes Séance
-              ListView.builder(
-                shrinkWrap:
-                    true, // Important pour éviter les conflits de hauteur
-                physics:
-                    NeverScrollableScrollPhysics(), // Pas de défilement interne
-                itemCount: 5, // Nombre de cartes à afficher
-                itemBuilder: (context, index) {
-                  return SeanceCard(); // Génération des cartes
-                },
-              ),
-            ],
-          ),
-        ),
-        // Page Messages
-        Center(child: Text("Mon compte")),
+      body: [
+        Accueil(connectedUserData: widget.connectedUserData),
+        Seances(),
+        Compte(),
       ][currentPageIndex],
     );
   }
 }
 
-class SeanceCard extends StatefulWidget {
-  const SeanceCard({super.key});
+/* Page Accueil */
+class Accueil extends StatelessWidget {
+  final Map<String, dynamic> connectedUserData;
+  const Accueil({super.key, required this.connectedUserData});
 
   @override
-  State<SeanceCard> createState() => _SeanceCardState();
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text("Data: $connectedUserData"),
+        ],
+      ),
+    );
+  }
 }
 
-class _SeanceCardState extends State<SeanceCard> {
+/* Page Séances */
+class Seances extends StatelessWidget {
+  const Seances({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ListView.separated(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: 10,
+            separatorBuilder: (context, index) => Divider(
+              color: Colors.black,
+              thickness: 0.5,
+            ),
+            itemBuilder: (context, index) {
+              return const CarteSeance();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/* Page Compte */
+class Compte extends StatelessWidget {
+  const Compte({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: Text("Mon compte"));
+  }
+}
+
+/* Cartes de séances */
+class CarteSeance extends StatelessWidget {
+  const CarteSeance({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(20),
+      padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
       child: Card(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Image.asset(
-              'assets/aquaponey.jpg',
-              height: 200, // Ajusté pour éviter un débordement
-              fit: BoxFit.cover, // S'assure que l'image est bien contenue
-            ),
-            ListTile(
-              title: Text('Aquaponey'),
-              subtitle:
-                  Text('Date: 12/12/2023\nHeure: 10:00 AM\nCoach: John Doe'),
-            ),
-          ],
+        color: Colors.white, // Ensure card color is white
+        elevation: 0, // Remove shadow
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Row(
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text('10:00', style: TextStyle(fontSize: 16)),
+                  SizedBox(height: 5),
+                  Text('45min', style: TextStyle(fontSize: 10)),
+                ],
+              ),
+              SizedBox(width: 10),
+              Image.asset(
+                'assets/aquaponey.jpg',
+                height: 50,
+                width: 50,
+                fit: BoxFit.cover,
+              ),
+              SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Aquaponey', style: TextStyle(fontSize: 16)),
+                    SizedBox(height: 5),
+                    Text('Description de la séance',
+                        style: TextStyle(fontSize: 12)),
+                  ],
+                ),
+              ),
+              Column(
+                children: [
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(
+                          255, 255, 168, 53), // Couleur orange du bouton
+                      foregroundColor: const Color.fromARGB(
+                          255, 56, 30, 30), // Couleur du texte
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 0), // Réduit la taille du bouton
+                    ),
+                    child: Text('Réserver'),
+                  ),
+                  SizedBox(height: 5),
+                  Text('10 places dispos', style: TextStyle(fontSize: 12)),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
