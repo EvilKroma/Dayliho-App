@@ -1,66 +1,120 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/callApi.dart';
 
 void main() {
-  runApp(/*const*/ MaterialApp(
+  runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: Principale(),
+    home: FirstPage(),
     theme: ThemeData.dark(),
   ));
 }
 
-class Principale extends StatelessWidget {
-  const Principale({super.key});
+class FirstPage extends StatefulWidget {
+  const FirstPage({super.key});
+
+  @override
+  State<FirstPage> createState() => _FirstPageState();
+}
+
+class _FirstPageState extends State<FirstPage> {
+  final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
+  final TextEditingController _userController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Text('Leading'),
-        title: Text('Title'),
-        titleTextStyle: TextStyle(color: Colors.red, fontSize: 40),
-        backgroundColor: Colors.green,
-        centerTitle: true,
-      ),
-      body: Column(
+      body: Form(
+        key: _loginFormKey,
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(children: [
-              for (int i = 0; i < 3; i++) DataColumn(),
-            ]),
-            for (int i = 0; i < 3; i++) DataRow(),
-          ]),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => print('FloatingActionButton cliqué'),
-        child: Icon(Icons.add),
+            TextFormField(
+              controller: _userController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: "nom d'utilisateur",
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Erreur : entrer un texte correct';
+                }
+                return null;
+              },
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (_loginFormKey.currentState!.validate()) {
+                  String login = _userController.text;
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SecondPage(firstValue: login)),
+                  );
+                }
+              },
+              child: const Text("Valider"),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
-class DataRow extends StatelessWidget {
-  const DataRow({super.key});
+class SecondPage extends StatefulWidget {
+  final String firstValue;
+  const SecondPage({super.key, required this.firstValue});
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.blue,
-      padding: EdgeInsets.all(20),
-      width: 450,
-      child: Text('data'),
-    );
-  }
+  State<SecondPage> createState() => _SecondPageState();
 }
 
-class DataColumn extends StatelessWidget {
-  const DataColumn({super.key});
+class _SecondPageState extends State<SecondPage> {
+  late Future<List> _user;
+
+  @override
+  void initState() {
+    super.initState();
+    _user = Utilisateur.getAllUser();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.blue,
-      padding: EdgeInsets.all(20),
-      child: Text('data ligne'),
+    return Scaffold(
+      appBar: AppBar(title: Text(widget.firstValue)),
+      body: Container(
+        child: FutureBuilder<List>(
+          future: _user,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return ListView.builder(
+                itemCount: snapshot.data?.length,
+                itemBuilder: (context, i) {
+                  final nom = snapshot.data?[i]['nom'] ?? 'Nom non disponible';
+                  final prenom =
+                      snapshot.data?[i]['prenom'] ?? 'Prénom non disponible';
+                  print(snapshot.data?[i]);
+                  return Card(
+                    child: ListTile(
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(nom, style: const TextStyle(fontSize: 20)),
+                          Text(prenom, style: const TextStyle(fontSize: 20)),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            } else {
+              return const Center(
+                child: Text("Pas de données"),
+              );
+            }
+          },
+        ),
+      ),
     );
   }
 }
