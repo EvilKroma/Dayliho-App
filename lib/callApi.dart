@@ -47,7 +47,8 @@ class Seance {
   }
 }
 
-class Compte {
+class CompteApi {
+  // Renommée en CompteApi ou ApiService
   static String baseUrl = 'http://10.0.2.2:1234';
 
   // Récupération des données du compte
