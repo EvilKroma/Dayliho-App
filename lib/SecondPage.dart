@@ -59,7 +59,7 @@ class _SecondPageState extends State<SecondPage> {
       body: [
         Accueil(connectedUserData: widget.connectedUserData),
         Seances(),
-        Compte(),
+        Compte(connectedUserData: widget.connectedUserData),
       ][currentPageIndex],
     );
   }
