@@ -26,7 +26,7 @@ class Seances extends StatelessWidget {
                   titre: seance['titre'] ?? 'N/A',
                   description: seance['description'] ?? 'Aucune description',
                   imagePath:
-                      'assets/aquaponey.jpg', // Or use seance['imagePath'] if available
+                      'assets/thumbnail.png', // Or use seance['imagePath'] if available
                   placesDisponibles: seance['nombrePlaces'] ?? 0,
                 );
               }).toList(),
