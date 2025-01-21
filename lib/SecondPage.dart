@@ -84,6 +84,18 @@ class Accueil extends StatelessWidget {
 }
 
 /* Page Séances */
+
+/* Page Compte */
+class Compte extends StatelessWidget {
+  const Compte({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: Text("Mon compte"));
+  }
+}
+
+/* Page Séances */
 class Seances extends StatelessWidget {
   const Seances({super.key});
 
@@ -102,15 +114,15 @@ class Seances extends StatelessWidget {
           return SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: snapshot.data!.map((video) {
+              children: snapshot.data!.map((seance) {
                 return CarteSeance(
-                  heure: video['heure'] ?? 'N/A',
-                  duree: video['duree'] ?? 'N/A',
-                  titre: video['titre'] ?? 'N/A',
-                  description: video['description'] ?? 'Aucune description',
+                  heureDebut: _extraireHeure(seance['dateDebut']),
+                  duree: _calculerDuree(seance['dateDebut'], seance['dateFin']),
+                  titre: seance['titre'] ?? 'N/A',
+                  description: seance['description'] ?? 'Aucune description',
                   imagePath:
                       'assets/aquaponey.jpg', // Par défaut, ou depuis le JSON
-                  placesDisponibles: video['placesDisponibles'] ?? 0,
+                  placesDisponibles: seance['nombrePlaces'] ?? 0,
                 );
               }).toList(),
             ),
@@ -119,21 +131,39 @@ class Seances extends StatelessWidget {
       },
     );
   }
-}
 
-/* Page Compte */
-class Compte extends StatelessWidget {
-  const Compte({super.key});
+  // Fonction pour extraire uniquement l'heure d'une date
+  String _extraireHeure(String? date) {
+    if (date == null) return 'Heure inconnue';
+    try {
+      DateTime dateTime = DateTime.parse(date);
+      return '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')} ';
+    } catch (e) {
+      return 'Heure invalide';
+    }
+  }
 
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text("Mon compte"));
+  // Fonction pour calculer la durée
+  String _calculerDuree(String? dateDebut, String? dateFin) {
+    if (dateDebut == null || dateFin == null) return 'Durée inconnue';
+    try {
+      DateTime debut = DateTime.parse(dateDebut);
+      DateTime fin = DateTime.parse(dateFin);
+      Duration difference = fin.difference(debut);
+
+      int heures = difference.inHours;
+      int minutes = difference.inMinutes % 60;
+
+      return '${heures}h ${minutes}min';
+    } catch (e) {
+      return 'Durée invalide';
+    }
   }
 }
 
-/* Cartes de séances */
+/* Classe CarteSeance */
 class CarteSeance extends StatelessWidget {
-  final String heure;
+  final String heureDebut;
   final String duree;
   final String titre;
   final String description;
@@ -142,7 +172,7 @@ class CarteSeance extends StatelessWidget {
 
   const CarteSeance({
     super.key,
-    required this.heure,
+    required this.heureDebut,
     required this.duree,
     required this.titre,
     required this.description,
@@ -164,7 +194,7 @@ class CarteSeance extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(heure, style: TextStyle(fontSize: 16)),
+                  Text(heureDebut, style: TextStyle(fontSize: 16)),
                   SizedBox(height: 5),
                   Text(duree, style: TextStyle(fontSize: 10)),
                 ],
