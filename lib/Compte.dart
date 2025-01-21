@@ -7,35 +7,52 @@ class Compte extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Récupération de l'ID de l'utilisateur et conversion en String
-    var userId = connectedUserData['userId'].toString(); // Conversion en String
+    var userId = connectedUserData['userId'].toString();
 
-    return FutureBuilder<Map<String, dynamic>>(
-      future: CompteApi.getCompteData(userId), // Utilisation de CompteApi
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator()); // Chargement
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Erreur: ${snapshot.error}')); // Erreur
-        } else if (snapshot.hasData) {
-          // Affichage des données récupérées
-          var compteData = snapshot.data!;
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                //Text("User ID: $userId"), // Affiche l'ID de l'utilisateur
-                Text("Nom: ${compteData['nom']}"),
-                Text("Prénom: ${compteData['prenom']}"),
-                Text("Email: ${compteData['email']}"),
-                Text("Rôle: ${compteData['role']}"),
-              ],
-            ),
-          );
-        } else {
-          return Center(child: Text('Aucune donnée disponible.'));
-        }
-      },
+    return Scaffold(
+      body: FutureBuilder<Map<String, dynamic>>(
+        future: CompteApi.getCompteData(userId),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Erreur: ${snapshot.error}'));
+          } else if (snapshot.hasData) {
+            var compteData = snapshot.data!;
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundImage: NetworkImage(
+                        compteData['profilePictureUrl'] ??
+                            'https://via.placeholder.com/150'),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    "${compteData['nom']} ${compteData['prenom']}",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "Email: ${compteData['email']}",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "Rôle: ${compteData['role']}",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            return Center(child: Text('Aucune donnée disponible.'));
+          }
+        },
+      ),
     );
   }
 }
