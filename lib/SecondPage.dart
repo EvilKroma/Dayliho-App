@@ -90,7 +90,7 @@ class Seances extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<dynamic>>(
-      future: Seance.getVideos(),
+      future: Seance.getSeances(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
@@ -102,10 +102,10 @@ class Seances extends StatelessWidget {
           return SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: snapshot.data!.map((video) {
+              children: snapshot.data!.map((seance) {
                 return Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text(jsonEncode(video)),
+                  child: Text(jsonEncode(seance)),
                 );
               }).toList(),
             ),

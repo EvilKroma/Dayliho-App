@@ -27,7 +27,7 @@ class Utilisateur {
 class Seance {
   static String baseUrl = 'http://10.0.2.2:1234';
 
-  static Future<List<dynamic>> getVideos() async {
+  static Future<List<dynamic>> getSeances() async {
     try {
       var res = await http.get(
         Uri.parse(baseUrl + '/video/getVideos'),
