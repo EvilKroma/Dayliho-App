@@ -102,10 +102,15 @@ class Seances extends StatelessWidget {
           return SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: snapshot.data!.map((seance) {
-                return Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(jsonEncode(seance)),
+              children: snapshot.data!.map((video) {
+                return CarteSeance(
+                  heure: video['heure'] ?? 'N/A',
+                  duree: video['duree'] ?? 'N/A',
+                  titre: video['titre'] ?? 'N/A',
+                  description: video['description'] ?? 'Aucune description',
+                  imagePath:
+                      'assets/aquaponey.jpg', // Par défaut, ou depuis le JSON
+                  placesDisponibles: video['placesDisponibles'] ?? 0,
                 );
               }).toList(),
             ),
@@ -128,15 +133,30 @@ class Compte extends StatelessWidget {
 
 /* Cartes de séances */
 class CarteSeance extends StatelessWidget {
-  const CarteSeance({super.key});
+  final String heure;
+  final String duree;
+  final String titre;
+  final String description;
+  final String imagePath;
+  final int placesDisponibles;
+
+  const CarteSeance({
+    super.key,
+    required this.heure,
+    required this.duree,
+    required this.titre,
+    required this.description,
+    required this.imagePath,
+    required this.placesDisponibles,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
       child: Card(
-        color: Colors.white, // Ensure card color is white
-        elevation: 0, // Remove shadow
+        color: Colors.white,
+        elevation: 0,
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Row(
@@ -144,14 +164,14 @@ class CarteSeance extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text('10:00', style: TextStyle(fontSize: 16)),
+                  Text(heure, style: TextStyle(fontSize: 16)),
                   SizedBox(height: 5),
-                  Text('45min', style: TextStyle(fontSize: 10)),
+                  Text(duree, style: TextStyle(fontSize: 10)),
                 ],
               ),
               SizedBox(width: 10),
               Image.asset(
-                'assets/aquaponey.jpg',
+                imagePath,
                 height: 50,
                 width: 50,
                 fit: BoxFit.cover,
@@ -161,10 +181,9 @@ class CarteSeance extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Aquaponey', style: TextStyle(fontSize: 16)),
+                    Text(titre, style: TextStyle(fontSize: 16)),
                     SizedBox(height: 5),
-                    Text('Description de la séance',
-                        style: TextStyle(fontSize: 12)),
+                    Text(description, style: TextStyle(fontSize: 12)),
                   ],
                 ),
               ),
@@ -173,18 +192,16 @@ class CarteSeance extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(
-                          255, 255, 168, 53), // Couleur orange du bouton
-                      foregroundColor: const Color.fromARGB(
-                          255, 56, 30, 30), // Couleur du texte
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 0), // Réduit la taille du bouton
+                      backgroundColor: Color.fromARGB(255, 255, 168, 53),
+                      foregroundColor: const Color.fromARGB(255, 56, 30, 30),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                     ),
                     child: Text('Réserver'),
                   ),
                   SizedBox(height: 5),
-                  Text('10 places dispos', style: TextStyle(fontSize: 12)),
+                  Text('$placesDisponibles places dispos',
+                      style: TextStyle(fontSize: 12)),
                 ],
               ),
             ],
