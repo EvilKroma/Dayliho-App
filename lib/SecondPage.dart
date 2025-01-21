@@ -2,6 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'callApi.dart'; // Import the callApi.dart file
+import 'Accueil.dart'; // Import Accueil.dart
+import 'Seances.dart'; // Import Seances.dart
+import 'Compte.dart'; // Import Compte.dart
 
 /* Page entière */
 class SecondPage extends StatefulWidget {
@@ -65,103 +68,7 @@ class _SecondPageState extends State<SecondPage> {
   }
 }
 
-/* Page Accueil */
-class Accueil extends StatelessWidget {
-  final Map<String, dynamic> connectedUserData;
-  const Accueil({super.key, required this.connectedUserData});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text("Data: $connectedUserData"),
-        ],
-      ),
-    );
-  }
-}
-
-/* Page Séances */
-
-/* Page Compte */
-class Compte extends StatelessWidget {
-  const Compte({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text("Mon compte"));
-  }
-}
-
-/* Page Séances */
-class Seances extends StatelessWidget {
-  const Seances({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<List<dynamic>>(
-      future: Seance.getSeances(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text("Erreur: ${snapshot.error}"));
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(child: Text("Aucune donnée disponible"));
-        } else {
-          return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: snapshot.data!.map((seance) {
-                return CarteSeance(
-                  heureDebut: _extraireHeure(seance['dateDebut']),
-                  duree: _calculerDuree(seance['dateDebut'], seance['dateFin']),
-                  titre: seance['titre'] ?? 'N/A',
-                  description: seance['description'] ?? 'Aucune description',
-                  imagePath:
-                      'assets/aquaponey.jpg', // Par défaut, ou depuis le JSON
-                  placesDisponibles: seance['nombrePlaces'] ?? 0,
-                );
-              }).toList(),
-            ),
-          );
-        }
-      },
-    );
-  }
-
-  // Fonction pour extraire uniquement l'heure d'une date
-  String _extraireHeure(String? date) {
-    if (date == null) return 'Heure inconnue';
-    try {
-      DateTime dateTime = DateTime.parse(date);
-      return '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')} ';
-    } catch (e) {
-      return 'Heure invalide';
-    }
-  }
-
-  // Fonction pour calculer la durée
-  String _calculerDuree(String? dateDebut, String? dateFin) {
-    if (dateDebut == null || dateFin == null) return 'Durée inconnue';
-    try {
-      DateTime debut = DateTime.parse(dateDebut);
-      DateTime fin = DateTime.parse(dateFin);
-      Duration difference = fin.difference(debut);
-
-      int heures = difference.inHours;
-      int minutes = difference.inMinutes % 60;
-
-      return '${heures}h ${minutes}min';
-    } catch (e) {
-      return 'Durée invalide';
-    }
-  }
-}
-
-/* Classe CarteSeance */
+/* Cartes de séances */
 class CarteSeance extends StatelessWidget {
   final String heureDebut;
   final String duree;
