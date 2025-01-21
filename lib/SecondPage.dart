@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'callApi.dart'; // Import the callApi.dart file
 import 'Accueil.dart'; // Import Accueil.dart
 import 'Seances.dart'; // Import Seances.dart
 import 'Compte.dart'; // Import Compte.dart

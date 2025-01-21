@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'callApi.dart';
-import 'SecondPage.dart'; // Import if CarteSeance is in SecondPage.dart
 
 class Seances extends StatelessWidget {
   const Seances({super.key});
