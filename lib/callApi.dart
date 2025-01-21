@@ -23,3 +23,24 @@ class Utilisateur {
     }
   }
 }
+
+class Seance {
+  static String baseUrl = 'http://10.0.2.2:1234';
+
+  static Future<List<dynamic>> getVideos() async {
+    try {
+      var res = await http.get(
+        Uri.parse(baseUrl + '/video/getVideos'),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (res.statusCode == 200) {
+        return jsonDecode(res.body);
+      } else {
+        throw Exception('Erreur lors de la récupération des vidéos');
+      }
+    } catch (err) {
+      throw Exception(err.toString());
+    }
+  }
+}

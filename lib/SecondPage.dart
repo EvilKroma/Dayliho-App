@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'callApi.dart'; // Import the callApi.dart file
 
 /* Page entière */
 class SecondPage extends StatefulWidget {
@@ -24,7 +27,7 @@ class _SecondPageState extends State<SecondPage> {
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.logout),
         ),
-        automaticallyImplyLeading: true, // Retire le bouton de retour
+        automaticallyImplyLeading: true, // Retire le bouton déconnexion
       ),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
@@ -86,24 +89,29 @@ class Seances extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ListView.separated(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: 10,
-            separatorBuilder: (context, index) => Divider(
-              color: Colors.black,
-              thickness: 0.5,
+    return FutureBuilder<List<dynamic>>(
+      future: Seance.getVideos(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text("Erreur: ${snapshot.error}"));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(child: Text("Aucune donnée disponible"));
+        } else {
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: snapshot.data!.map((video) {
+                return Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(jsonEncode(video)),
+                );
+              }).toList(),
             ),
-            itemBuilder: (context, index) {
-              return const CarteSeance();
-            },
-          ),
-        ],
-      ),
+          );
+        }
+      },
     );
   }
 }
