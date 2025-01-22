@@ -3,12 +3,14 @@ import 'Seances.dart'; // Import Seances.dart
 
 class Accueil extends StatelessWidget {
   final Map<String, dynamic> connectedUserData;
-  final VoidCallback onSeanceSelected; // Ajouter le callback
+  final VoidCallback onSeanceSelected; // Existing callback
+  final VoidCallback onCompteSelected; // New callback
 
   const Accueil({
     super.key,
     required this.connectedUserData,
-    required this.onSeanceSelected, // Modifier le constructeur
+    required this.onSeanceSelected, // Existing constructor parameter
+    required this.onCompteSelected, // New constructor parameter
   });
 
   @override
@@ -23,17 +25,19 @@ class Accueil extends StatelessWidget {
               // First Card
               Expanded(
                 child: GestureDetector(
-                  onTap: onSeanceSelected, // Utiliser le callback
+                  onTap: onSeanceSelected, // Use existing callback
                   child: Card(
                     elevation: 4,
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         children: [
-                          Icon(Icons.event, size: 50, color: Colors.blue),
+                          Icon(Icons.event,
+                              size: 50,
+                              color: const Color.fromARGB(255, 235, 142, 2)),
                           SizedBox(height: 10),
                           Text(
-                            'Séance 1',
+                            'Planning',
                             style: TextStyle(fontSize: 16),
                           ),
                         ],
@@ -46,17 +50,19 @@ class Accueil extends StatelessWidget {
               // Second Card
               Expanded(
                 child: GestureDetector(
-                  onTap: onSeanceSelected, // Utiliser le callback
+                  onTap: onCompteSelected, // Use new callback
                   child: Card(
                     elevation: 4,
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         children: [
-                          Icon(Icons.event, size: 50, color: Colors.green),
+                          Icon(Icons.account_box,
+                              size: 50,
+                              color: const Color.fromARGB(255, 235, 142, 2)),
                           SizedBox(height: 10),
                           Text(
-                            'Séance 2',
+                            'Réservations',
                             style: TextStyle(fontSize: 16),
                           ),
                         ],
@@ -66,6 +72,44 @@ class Accueil extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+        ),
+        // New Full-Width Card with Background Image
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: GestureDetector(
+            onTap: onSeanceSelected, // Assign desired callback
+            child: Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Container(
+                height: 150,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  image: DecorationImage(
+                    image: AssetImage(
+                        'assets/news.webp'), // Replace with your image path
+                    fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(
+                      Colors.black.withOpacity(0.3),
+                      BlendMode.darken,
+                    ),
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    'Catalogue d\'exercices',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
         Expanded(

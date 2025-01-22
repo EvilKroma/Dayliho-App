@@ -23,6 +23,12 @@ class _SecondPageState extends State<SecondPage> {
     });
   }
 
+  void navigateToMySeances() {
+    setState(() {
+      currentPageIndex = 2; // Index de l'onglet Compte
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +71,8 @@ class _SecondPageState extends State<SecondPage> {
       body: [
         Accueil(
           connectedUserData: widget.connectedUserData,
-          onSeanceSelected: navigateToSeances, // Passer le callback
+          onSeanceSelected: navigateToSeances, // Pass existing callback
+          onCompteSelected: navigateToMySeances, // Pass new callback
         ),
         Seances(),
         Compte(connectedUserData: widget.connectedUserData),
