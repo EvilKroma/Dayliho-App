@@ -17,6 +17,12 @@ class SecondPage extends StatefulWidget {
 class _SecondPageState extends State<SecondPage> {
   int currentPageIndex = 0;
 
+  void navigateToSeances() {
+    setState(() {
+      currentPageIndex = 1; // Index de l'onglet Séances
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +63,10 @@ class _SecondPageState extends State<SecondPage> {
         ],
       ),
       body: [
-        Accueil(connectedUserData: widget.connectedUserData),
+        Accueil(
+          connectedUserData: widget.connectedUserData,
+          onSeanceSelected: navigateToSeances, // Passer le callback
+        ),
         Seances(),
         Compte(connectedUserData: widget.connectedUserData),
       ][currentPageIndex],
