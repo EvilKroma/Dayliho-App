@@ -16,17 +16,20 @@ class SecondPage extends StatefulWidget {
 
 class _SecondPageState extends State<SecondPage> {
   int currentPageIndex = 0;
+  final PageController _pageController = PageController();
 
   void navigateToSeances() {
-    setState(() {
-      currentPageIndex = 1; // Index de l'onglet Séances
-    });
+    _pageController.jumpToPage(1);
   }
 
   void navigateToMySeances() {
-    setState(() {
-      currentPageIndex = 2; // Index de l'onglet Compte
-    });
+    _pageController.jumpToPage(2);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
@@ -43,9 +46,7 @@ class _SecondPageState extends State<SecondPage> {
       ),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
-          setState(() {
-            currentPageIndex = index;
-          });
+          _pageController.jumpToPage(index);
         },
         indicatorColor: Color.fromARGB(255, 255, 168, 53),
         selectedIndex: currentPageIndex,
@@ -68,15 +69,23 @@ class _SecondPageState extends State<SecondPage> {
           ),
         ],
       ),
-      body: [
-        Accueil(
-          connectedUserData: widget.connectedUserData,
-          onSeanceSelected: navigateToSeances, // Pass existing callback
-          onCompteSelected: navigateToMySeances, // Pass new callback
-        ),
-        Seances(),
-        Compte(connectedUserData: widget.connectedUserData),
-      ][currentPageIndex],
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) {
+          setState(() {
+            currentPageIndex = index;
+          });
+        },
+        children: [
+          Accueil(
+            connectedUserData: widget.connectedUserData,
+            onSeanceSelected: navigateToSeances,
+            onCompteSelected: navigateToMySeances,
+          ),
+          Seances(),
+          Compte(connectedUserData: widget.connectedUserData),
+        ],
+      ),
     );
   }
 }
