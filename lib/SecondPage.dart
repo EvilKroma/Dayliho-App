@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'Accueil.dart'; // Import Accueil.dart
-import 'Seances.dart'; // Import Seances.dart
-import 'Compte.dart'; // Import Compte.dart
+import 'Accueil.dart';
+import 'Seances.dart';
+import 'Compte.dart';
 
 /* Page entière */
 class SecondPage extends StatefulWidget {
