@@ -70,3 +70,28 @@ class CompteApi {
     }
   }
 }
+
+class BookSeance {
+  // Renommée en CompteApi ou ApiService
+  static String baseUrl = 'http://10.0.2.2:1234';
+
+  // Récupération des données du compte
+  static Future<Map<String, dynamic>> bookSeance(
+      String userId, String seanceId) async {
+    try {
+      print(baseUrl + '/video/bookSeance/$userId/$seanceId');
+      var res = await http.post(
+        Uri.parse(baseUrl + '/video/bookSeance/$userId/$seanceId'),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (res.statusCode == 200) {
+        return jsonDecode(res.body);
+      } else {
+        throw Exception('Erreur lors de la réservation de la séance.');
+      }
+    } catch (err) {
+      throw Exception(err.toString());
+    }
+  }
+}

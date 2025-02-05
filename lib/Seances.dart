@@ -28,6 +28,9 @@ class Seances extends StatelessWidget {
                   imagePath:
                       'assets/thumbnail.png', // Or use seance['imagePath'] if available
                   placesDisponibles: seance['nombrePlaces'] ?? 0,
+                  seanceId: seance['id'].toString(), // Ajout du seanceId
+                  userId:
+                      '1', // Remplace par l'ID réel de l'utilisateur connecté
                 );
               }).toList(),
             ),
@@ -66,7 +69,6 @@ class Seances extends StatelessWidget {
   }
 }
 
-/* Cartes de séances */
 class CarteSeance extends StatelessWidget {
   final String heureDebut;
   final String duree;
@@ -74,6 +76,8 @@ class CarteSeance extends StatelessWidget {
   final String description;
   final String imagePath;
   final int placesDisponibles;
+  final String seanceId;
+  final String userId;
 
   const CarteSeance({
     super.key,
@@ -83,6 +87,8 @@ class CarteSeance extends StatelessWidget {
     required this.description,
     required this.imagePath,
     required this.placesDisponibles,
+    required this.seanceId,
+    required this.userId,
   });
 
   @override
@@ -125,7 +131,21 @@ class CarteSeance extends StatelessWidget {
               Column(
                 children: [
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      try {
+                        var response =
+                            await BookSeance.bookSeance(userId, seanceId);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              content: Text(response['message'] ??
+                                  'Réservé avec succès')),
+                        );
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Erreur: $e')),
+                        );
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromARGB(255, 255, 168, 53),
                       foregroundColor: const Color.fromARGB(255, 56, 30, 30),
