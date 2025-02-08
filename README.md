@@ -1,16 +1,10 @@
-# myapp
+# Dayliho - Applciation mobile
 
-A new Flutter project.
+Projet de création d'une application mobile connectée à notre site web Dayliho. Sur le site, des coachs sportifs publient des séances de sport, qui sont ensuite répertoriées sur l'application mobile. Les joueurs peuvent s'y inscrire pour réserver leur place.
 
-## Getting Started
+## Lancement
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Installer le SDK de Flutter.
+- Lancer une VM d'Android avec Android Studio par exemple.
+- Se rendre sur le projet et traper : `npm install`
+- Puis : `npm start`
