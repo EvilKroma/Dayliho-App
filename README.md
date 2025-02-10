@@ -7,5 +7,5 @@ Sur le site, des coachs sportifs publient des séances de sport, qui sont ensuit
 
 - Installer le SDK de Flutter.
 - Lancer une VM d'Android avec Android Studio par exemple.
-- Se rendre sur le projet et traper : `npm install`
-- Puis : `npm start`
+- Se rendre sur le projet et taper : `npm install`.
+- Puis : `npm start`.
