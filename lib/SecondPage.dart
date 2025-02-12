@@ -55,7 +55,7 @@ class _SecondPageState extends State<SecondPage> {
           ),
           NavigationDestination(
             icon: Badge(label: Text('3'), child: Icon(Icons.sports)),
-            label: 'Séances',
+            label: 'Planning',
           ),
           NavigationDestination(
             icon: Icon(Icons.book_online),
