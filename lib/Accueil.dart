@@ -163,74 +163,8 @@ class _AccueilState extends State<Accueil> {
           ),
         ),
         // Titre des séances réservées
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Text(
-            'Séances réservées',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-        ),
         // Affichage des séances réservées
-        Expanded(
-          child: isLoading
-              ? Center(child: CircularProgressIndicator())
-              : errorMessage.isNotEmpty
-                  ? Center(child: Text('Erreur: $errorMessage'))
-                  : ListView.builder(
-                      itemCount: bookedSeances.length,
-                      itemBuilder: (context, index) {
-                        var seance = bookedSeances[index];
-                        return CarteSeance(
-                          heureDebut: _extraireHeure(seance['dateDebut']),
-                          duree: _calculerDuree(
-                              seance['dateDebut'], seance['dateFin']),
-                          titre: seance['titre'] ?? 'N/A',
-                          description:
-                              seance['description'] ?? 'Aucune description',
-                          imagePath:
-                              'assets/thumbnail.png', // Or use seance['imagePath'] if available
-                          placesDisponibles: seance['nombrePlaces'] ?? 0,
-                          seanceId: seance['id'].toString(),
-                          userId: userId ??
-                              '1', // Remplace par l'ID réel de l'utilisateur connecté
-                          showReserveButton: false, // Hide the reserve button
-                        );
-                      },
-                    ),
-        ),
       ],
     );
-  }
-
-  // Fonction pour extraire uniquement l'heure d'une date
-  String _extraireHeure(String? date) {
-    if (date == null) return 'Heure inconnue';
-    try {
-      DateTime dateTime = DateTime.parse(date);
-      return '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
-    } catch (e) {
-      return 'Heure invalide';
-    }
-  }
-
-  // Fonction pour calculer la durée
-  String _calculerDuree(String? dateDebut, String? dateFin) {
-    if (dateDebut == null || dateFin == null) return 'Durée inconnue';
-    try {
-      DateTime debut = DateTime.parse(dateDebut);
-      DateTime fin = DateTime.parse(dateFin);
-      Duration difference = fin.difference(debut);
-
-      int heures = difference.inHours;
-      int minutes = difference.inMinutes % 60;
-
-      return '${heures}h ${minutes}min';
-    } catch (e) {
-      return 'Durée invalide';
-    }
   }
 }
