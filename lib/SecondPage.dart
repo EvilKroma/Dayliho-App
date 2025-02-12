@@ -39,12 +39,6 @@ class _SecondPageState extends State<SecondPage> {
       backgroundColor: Colors.white, // Set background color to white
       appBar: AppBar(
         title: Center(child: Text("Dayliho")),
-        actions: [
-          IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: const Icon(Icons.logout),
-          ),
-        ],
         automaticallyImplyLeading: false, // Remove the back arrow
       ),
       bottomNavigationBar: NavigationBar(

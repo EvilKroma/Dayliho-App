@@ -11,6 +11,9 @@ class Compte extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        automaticallyImplyLeading: false, // Remove the back arrow
+      ),
       body: FutureBuilder<Map<String, dynamic>>(
         future: CompteApi.getCompteData(userId),
         builder: (context, snapshot) {
@@ -45,6 +48,19 @@ class Compte extends StatelessWidget {
                   Text(
                     "Rôle: ${compteData['role']}",
                     style: TextStyle(fontSize: 16),
+                  ),
+                  Spacer(), // Push the button to the bottom
+                  ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red, // Red background color
+                      foregroundColor: Colors.white, // White text color
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: Center(child: Text('Déconnexion')),
                   ),
                 ],
               ),
