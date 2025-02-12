@@ -24,46 +24,49 @@ class _AccueilState extends State<Accueil> {
   List<dynamic> bookedSeances = []; // Stocke les séances réservées
   bool isLoading = true; // Indique si les données sont en cours de chargement
   String errorMessage = ''; // Stocke les erreurs éventuelles
+  String? userId; // ID de l'utilisateur
+  Map<String, dynamic>? compteData; // Données du compte
 
   @override
   void initState() {
     super.initState();
+    fetchUserId(); // Récupérer les données du compte
     fetchBookedSeances(); // Récupérer les séances dès le début
   }
 
+  Future<void> fetchUserId() async {
+    try {
+      var id = widget.connectedUserData['userId'].toString();
+      var data = await CompteApi.getCompteData(id);
+      setState(() {
+        userId = data['id'].toString();
+        compteData = data;
+      });
+      print("ID du compte récupéré: $userId");
+    } catch (err) {
+      print("Erreur lors de la récupération de l'ID du compte: $err");
+    }
+  }
+
   Future<void> fetchBookedSeances() async {
-    var userId = widget.connectedUserData['userId'].toString();
-    var data = await getBookedSeances.GetBookedSeances(userId);
+    try {
+      var id = widget.connectedUserData['userId'].toString();
+      var data = await getBookedSeances.GetBookedSeances(id);
 
-    print("Réponse API (débug) : $data");
-
-    if (data.containsKey('bookedSeances')) {
-      var bookedList = data['bookedSeances'];
-      if (bookedList is! List) {
+      if (data is List) {
         setState(() {
-          errorMessage =
-              "Format incorrect : expected a list but got ${bookedList.runtimeType}";
-          isLoading = false;
-        });
-        return;
-      }
-
-      // Vérifions si bookedList est bien une liste
-      if (bookedList is List) {
-        setState(() {
-          bookedSeances = List<dynamic>.from(bookedList);
+          bookedSeances = data;
           isLoading = false;
         });
       } else {
         setState(() {
-          errorMessage =
-              "Format incorrect : expected a list but got ${bookedList.runtimeType}";
+          errorMessage = "Format de réponse inattendu";
           isLoading = false;
         });
       }
-    } else {
+    } catch (err) {
       setState(() {
-        errorMessage = "Format de réponse inattendu";
+        errorMessage = err.toString();
         isLoading = false;
       });
     }
@@ -71,8 +74,6 @@ class _AccueilState extends State<Accueil> {
 
   @override
   Widget build(BuildContext context) {
-    var userId = widget.connectedUserData['userId'].toString();
-
     return Column(
       children: [
         // Dashboard avec les cartes
@@ -124,7 +125,6 @@ class _AccueilState extends State<Accueil> {
             ],
           ),
         ),
-
         // Carte pour le catalogue d'exercices
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -143,7 +143,7 @@ class _AccueilState extends State<Accueil> {
                     image: AssetImage('assets/news.webp'),
                     fit: BoxFit.cover,
                     colorFilter: ColorFilter.mode(
-                      Colors.black.withOpacity(0.3),
+                      Colors.black,
                       BlendMode.darken,
                     ),
                   ),
@@ -162,8 +162,23 @@ class _AccueilState extends State<Accueil> {
             ),
           ),
         ),
-
         // Affichage des séances réservées
+        Expanded(
+          child: isLoading
+              ? Center(child: CircularProgressIndicator())
+              : errorMessage.isNotEmpty
+                  ? Center(child: Text('Erreur: $errorMessage'))
+                  : ListView.builder(
+                      itemCount: bookedSeances.length,
+                      itemBuilder: (context, index) {
+                        var seance = bookedSeances[index];
+                        return ListTile(
+                          title: Text(seance['titre']),
+                          subtitle: Text(seance['description']),
+                        );
+                      },
+                    ),
+        ),
       ],
     );
   }
