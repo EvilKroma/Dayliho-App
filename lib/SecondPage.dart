@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'Accueil.dart';
 import 'Seances.dart';
 import 'Compte.dart';
+import 'Reservations.dart';
 
 /* Page entière */
 class SecondPage extends StatefulWidget {
@@ -61,6 +62,10 @@ class _SecondPageState extends State<SecondPage> {
             label: 'Séances',
           ),
           NavigationDestination(
+            icon: Icon(Icons.book_online),
+            label: 'Réservations',
+          ),
+          NavigationDestination(
             icon: Badge(
               label: Text('2'),
               child: Icon(Icons.account_box_sharp),
@@ -83,6 +88,7 @@ class _SecondPageState extends State<SecondPage> {
             onCompteSelected: navigateToMySeances,
           ),
           Seances(),
+          Reservations(),
           Compte(connectedUserData: widget.connectedUserData),
         ],
       ),
