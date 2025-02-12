@@ -37,13 +37,15 @@ class _SecondPageState extends State<SecondPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white, // Set background color to white
-      // appBar: AppBar(title: Text("Utilisateur : ${widget.email}")),
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.logout),
-        ),
-        automaticallyImplyLeading: true, // Retire le bouton déconnexion
+        title: Center(child: Text("Dayliho")),
+        actions: [
+          IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(Icons.logout),
+          ),
+        ],
+        automaticallyImplyLeading: false, // Remove the back arrow
       ),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {

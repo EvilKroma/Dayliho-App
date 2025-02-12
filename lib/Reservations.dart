@@ -49,9 +49,6 @@ class _ReservationsState extends State<Reservations> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Mes Réservations'),
-      ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : errorMessage.isNotEmpty
