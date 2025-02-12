@@ -55,23 +55,25 @@ class _SecondPageState extends State<SecondPage> {
         },
         indicatorColor: Color.fromARGB(255, 255, 168, 53),
         selectedIndex: currentPageIndex,
+        labelBehavior: NavigationDestinationLabelBehavior
+            .alwaysShow, // Ensure labels are always shown
         destinations: const <Widget>[
           NavigationDestination(
             selectedIcon: Icon(Icons.home),
             icon: Icon(Icons.home_outlined),
-            label: 'Accueil',
+            label: '',
           ),
           NavigationDestination(
             icon: Badge(label: Text('!'), child: Icon(Icons.sports)),
-            label: 'Planning',
+            label: '',
           ),
           NavigationDestination(
-            icon: Icon(Icons.book_online),
-            label: 'Réservations',
+            icon: Icon(Icons.bookmark_border),
+            label: '',
           ),
           NavigationDestination(
             icon: Icon(Icons.account_box_sharp),
-            label: 'Compte',
+            label: '',
           ),
         ],
       ),
