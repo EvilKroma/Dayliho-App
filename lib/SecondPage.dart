@@ -88,7 +88,9 @@ class _SecondPageState extends State<SecondPage> {
             onSeanceSelected: navigateToSeances,
             onCompteSelected: navigateToMySeances,
           ),
-          Seances(),
+          Seances(
+              userId: widget.connectedUserData['userId']
+                  .toString()), // Pass userId to Seances
           Reservations(
             connectedUserData: widget.connectedUserData,
           ),

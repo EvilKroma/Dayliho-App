@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'callApi.dart';
 
 class Seances extends StatelessWidget {
-  const Seances({super.key});
+  final String userId; // Add userId parameter
+
+  const Seances({super.key, required this.userId}); // Update constructor
 
   @override
   Widget build(BuildContext context) {
@@ -21,16 +23,16 @@ class Seances extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: snapshot.data!.map((seance) {
                 return CarteSeance(
+                  date: _extraireDate(seance['dateDebut']), // Pass the date
                   heureDebut: _extraireHeure(seance['dateDebut']),
                   duree: _calculerDuree(seance['dateDebut'], seance['dateFin']),
                   titre: seance['titre'] ?? 'N/A',
                   description: seance['description'] ?? 'Aucune description',
-                  imagePath:
-                      'assets/thumbnail.png', // Or use seance['imagePath'] if available
-                  placesDisponibles: seance['nombrePlaces'] ?? 0,
+                  imagePath: seance['URL_photo'],
+                  lieu:
+                      seance['lieu'], // Or use seance['imagePath'] if available
                   seanceId: seance['id'].toString(), // Ajout du seanceId
-                  userId:
-                      '1', // Remplace par l'ID réel de l'utilisateur connecté
+                  userId: userId, // Pass userId to CarteSeance
                 );
               }).toList(),
             ),
@@ -48,6 +50,17 @@ class Seances extends StatelessWidget {
       return '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
     } catch (e) {
       return 'Heure invalide';
+    }
+  }
+
+  // Fonction pour extraire la date en jj/mm
+  String _extraireDate(String? date) {
+    if (date == null) return 'Date inconnue';
+    try {
+      DateTime dateTime = DateTime.parse(date);
+      return '${dateTime.day.toString().padLeft(2, '0')}/${dateTime.month.toString().padLeft(2, '0')}';
+    } catch (e) {
+      return 'Date invalide';
     }
   }
 
@@ -70,24 +83,26 @@ class Seances extends StatelessWidget {
 }
 
 class CarteSeance extends StatelessWidget {
+  final String date;
   final String heureDebut;
   final String duree;
   final String titre;
+  final String lieu;
   final String description;
   final String imagePath;
-  final int placesDisponibles;
   final String seanceId;
   final String userId;
   final bool showReserveButton; // Add this parameter
 
   const CarteSeance({
     super.key,
+    required this.date,
     required this.heureDebut,
     required this.duree,
     required this.titre,
+    required this.lieu,
     required this.description,
     required this.imagePath,
-    required this.placesDisponibles,
     required this.seanceId,
     required this.userId,
     this.showReserveButton = true, // Default to true
@@ -107,26 +122,35 @@ class CarteSeance extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Text(date,
+                      style: TextStyle(fontSize: 12)), // Display the date
+                  SizedBox(height: 5),
                   Text(heureDebut, style: TextStyle(fontSize: 16)),
                   SizedBox(height: 5),
                   Text(duree, style: TextStyle(fontSize: 10)),
                 ],
               ),
               SizedBox(width: 10),
-              Image.asset(
+              Image.network(
                 imagePath,
                 height: 50,
                 width: 50,
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Icon(Icons
+                      .error); // Display an error icon if the image fails to load
+                },
               ),
               SizedBox(width: 10),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(titre, style: TextStyle(fontSize: 16)),
+                    Text(titre, style: TextStyle(fontSize: 14)),
                     SizedBox(height: 5),
-                    Text(description, style: TextStyle(fontSize: 12)),
+                    Text(description, style: TextStyle(fontSize: 10)),
+                    SizedBox(height: 5),
+                    Text(lieu, style: TextStyle(fontSize: 8)),
                   ],
                 ),
               ),
@@ -157,9 +181,6 @@ class CarteSeance extends StatelessWidget {
                       ),
                       child: Text('Réserver'),
                     ),
-                  SizedBox(height: 5),
-                  Text('$placesDisponibles places dispos',
-                      style: TextStyle(fontSize: 12)),
                 ],
               ),
             ],

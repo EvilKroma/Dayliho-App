@@ -61,14 +61,17 @@ class _ReservationsState extends State<Reservations> {
                         itemBuilder: (context, index) {
                           var seance = bookedSeances[index];
                           return CarteSeance(
+                            date: _extraireDate(
+                                seance['dateDebut']), // Pass the date
                             heureDebut: _extraireHeure(seance['dateDebut']),
                             duree: _calculerDuree(
                                 seance['dateDebut'], seance['dateFin']),
                             titre: seance['titre'] ?? 'N/A',
                             description:
                                 seance['description'] ?? 'Aucune description',
-                            imagePath: 'assets/thumbnail.png',
-                            placesDisponibles: seance['nombrePlaces'] ?? 0,
+                            imagePath:
+                                seance['URL_photo'], // Use URL for imagePath
+                            lieu: seance['lieu'],
                             seanceId: seance['id'].toString(),
                             userId:
                                 widget.connectedUserData['userId'].toString(),
@@ -89,6 +92,17 @@ class _ReservationsState extends State<Reservations> {
       return '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
     } catch (e) {
       return 'Heure invalide';
+    }
+  }
+
+  // Fonction pour extraire la date en jj/mm
+  String _extraireDate(String? date) {
+    if (date == null) return 'Date inconnue';
+    try {
+      DateTime dateTime = DateTime.parse(date);
+      return '${dateTime.day.toString().padLeft(2, '0')}/${dateTime.month.toString().padLeft(2, '0')}';
+    } catch (e) {
+      return 'Date invalide';
     }
   }
 
