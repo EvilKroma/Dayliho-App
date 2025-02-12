@@ -78,6 +78,7 @@ class CarteSeance extends StatelessWidget {
   final int placesDisponibles;
   final String seanceId;
   final String userId;
+  final bool showReserveButton; // Add this parameter
 
   const CarteSeance({
     super.key,
@@ -89,6 +90,7 @@ class CarteSeance extends StatelessWidget {
     required this.placesDisponibles,
     required this.seanceId,
     required this.userId,
+    this.showReserveButton = true, // Default to true
   });
 
   @override
@@ -130,30 +132,31 @@ class CarteSeance extends StatelessWidget {
               ),
               Column(
                 children: [
-                  ElevatedButton(
-                    onPressed: () async {
-                      try {
-                        var response =
-                            await BookSeance.bookSeance(userId, seanceId);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text(response['message'] ??
-                                  'Réservé avec succès')),
-                        );
-                      } catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Erreur: $e')),
-                        );
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 255, 168, 53),
-                      foregroundColor: const Color.fromARGB(255, 56, 30, 30),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                  if (showReserveButton)
+                    ElevatedButton(
+                      onPressed: () async {
+                        try {
+                          var response =
+                              await BookSeance.bookSeance(userId, seanceId);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                                content: Text(response['message'] ??
+                                    'Réservé avec succès')),
+                          );
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Erreur: $e')),
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 255, 168, 53),
+                        foregroundColor: const Color.fromARGB(255, 56, 30, 30),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                      ),
+                      child: Text('Réserver'),
                     ),
-                    child: Text('Réserver'),
-                  ),
                   SizedBox(height: 5),
                   Text('$placesDisponibles places dispos',
                       style: TextStyle(fontSize: 12)),
