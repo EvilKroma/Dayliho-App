@@ -95,3 +95,31 @@ class BookSeance {
     }
   }
 }
+
+class getBookedSeances {
+  // Renommée en CompteApi ou ApiService
+  static String baseUrl = 'http://10.0.2.2:1234';
+
+  // Récupération des données du compte
+  static Future<Map<String, dynamic>> GetBookedSeances(String userId) async {
+    try {
+      var res = await http.get(
+        Uri.parse(baseUrl + '/video/getBookedSeances/$userId'),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (res.statusCode == 200) {
+        print(res.body);
+        var data = jsonDecode(res.body);
+        // Si la réponse contient une clé 'bookedSeances' qui est une liste
+        List<dynamic> bookedSeances = data['bookedSeances'];
+        return {'bookedSeances': bookedSeances};
+      } else {
+        throw Exception(
+            'Erreur lors de la récupération des séances réservées.');
+      }
+    } catch (err) {
+      throw Exception(err.toString());
+    }
+  }
+}
