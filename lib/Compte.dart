@@ -11,9 +11,6 @@ class Compte extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        automaticallyImplyLeading: false, // Remove the back arrow
-      ),
       body: FutureBuilder<Map<String, dynamic>>(
         future: CompteApi.getCompteData(userId),
         builder: (context, snapshot) {
