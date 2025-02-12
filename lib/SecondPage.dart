@@ -38,7 +38,15 @@ class _SecondPageState extends State<SecondPage> {
     return Scaffold(
       backgroundColor: Colors.white, // Set background color to white
       appBar: AppBar(
-        title: Center(child: Text("Dayliho")),
+        title: Center(
+          child: Text(
+            "Dayliho",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.orange,
+            ),
+          ),
+        ),
         automaticallyImplyLeading: false, // Remove the back arrow
       ),
       bottomNavigationBar: NavigationBar(
@@ -54,7 +62,7 @@ class _SecondPageState extends State<SecondPage> {
             label: 'Accueil',
           ),
           NavigationDestination(
-            icon: Badge(label: Text('3'), child: Icon(Icons.sports)),
+            icon: Badge(label: Text('!'), child: Icon(Icons.sports)),
             label: 'Planning',
           ),
           NavigationDestination(
@@ -62,10 +70,7 @@ class _SecondPageState extends State<SecondPage> {
             label: 'Réservations',
           ),
           NavigationDestination(
-            icon: Badge(
-              label: Text('2'),
-              child: Icon(Icons.account_box_sharp),
-            ),
+            icon: Icon(Icons.account_box_sharp),
             label: 'Compte',
           ),
         ],

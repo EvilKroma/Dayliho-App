@@ -97,6 +97,8 @@ class _AccueilState extends State<Accueil> {
                             padding: const EdgeInsets.all(16.0),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment
+                                  .center, // Center the content
                               children: [
                                 Icon(Icons.event,
                                     size: 50,
@@ -126,6 +128,8 @@ class _AccueilState extends State<Accueil> {
                             padding: const EdgeInsets.all(16.0),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment
+                                  .center, // Center the content
                               children: [
                                 // Ensure the size of the number of reservations matches the icon size
                                 Text(
@@ -151,34 +155,31 @@ class _AccueilState extends State<Accueil> {
             // Carte pour le catalogue d'exercices
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: GestureDetector(
-                onTap: widget.onSeanceSelected,
-                child: Card(
-                  elevation: 4,
-                  shape: RoundedRectangleBorder(
+              child: Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Container(
+                  height: 150,
+                  decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Container(
-                    height: 150,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      image: DecorationImage(
-                        image: AssetImage('assets/news.webp'),
-                        fit: BoxFit.cover,
-                        colorFilter: ColorFilter.mode(
-                          Colors.black.withOpacity(0.5),
-                          BlendMode.darken,
-                        ),
+                    image: DecorationImage(
+                      image: AssetImage('assets/news.webp'),
+                      fit: BoxFit.cover,
+                      colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.25),
+                        BlendMode.darken,
                       ),
                     ),
-                    child: Center(
-                      child: Text(
-                        'Catalogue d\'exercices',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Votre plateforme de sport en ligne',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
