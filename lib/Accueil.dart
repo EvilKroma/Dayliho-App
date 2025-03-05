@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'CallApi.dart'; // Import de l'API
+import 'callApi.dart'; // Import de l'API
 import 'Seances.dart'; // Import Seances.dart
 
 class Accueil extends StatefulWidget {

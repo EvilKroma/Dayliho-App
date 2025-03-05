@@ -1,8 +1,9 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class Utilisateur {
-  static String baseUrl = 'http://10.0.2.2:1234';
+  static String baseUrl = 'http://localhost:1234';
 
   // Connexion de l'utilisateur
   static Future<Map<String, dynamic>> checkUser(
@@ -26,7 +27,7 @@ class Utilisateur {
 }
 
 class Seance {
-  static String baseUrl = 'http://10.0.2.2:1234';
+  static String baseUrl = 'http://localhost:1234';
 
   // Récupération des séances de sport
   static Future<List<dynamic>> getSeances() async {
@@ -49,7 +50,7 @@ class Seance {
 
 class CompteApi {
   // Renommée en CompteApi ou ApiService
-  static String baseUrl = 'http://10.0.2.2:1234';
+  static String baseUrl = 'http://localhost:1234';
 
   // Récupération des données du compte
   static Future<Map<String, dynamic>> getCompteData(String userId) async {
@@ -73,7 +74,7 @@ class CompteApi {
 
 class BookSeance {
   // Renommée en CompteApi ou ApiService
-  static String baseUrl = 'http://10.0.2.2:1234';
+  static String baseUrl = 'http://localhost:1234';
 
   // Récupération des données du compte
   static Future<Map<String, dynamic>> bookSeance(
@@ -97,7 +98,7 @@ class BookSeance {
 }
 
 class getBookedSeances {
-  static String baseUrl = 'http://10.0.2.2:1234';
+  static String baseUrl = 'http://localhost:1234';
 
   static Future<List<dynamic>> GetBookedSeances(String userId) async {
     try {
