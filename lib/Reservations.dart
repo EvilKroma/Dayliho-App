@@ -61,8 +61,7 @@ class _ReservationsState extends State<Reservations> {
                         itemBuilder: (context, index) {
                           var seance = bookedSeances[index];
                           return CarteSeance(
-                            date: _extraireDate(
-                                seance['dateDebut']), // Pass the date
+                            date: _extraireDate(seance['dateDebut']),
                             heureDebut: _extraireHeure(seance['dateDebut']),
                             duree: _calculerDuree(
                                 seance['dateDebut'], seance['dateFin']),
@@ -70,8 +69,9 @@ class _ReservationsState extends State<Reservations> {
                             description:
                                 seance['description'] ?? 'Aucune description',
                             imagePath:
-                                seance['URL_photo'], // Use URL for imagePath
-                            lieu: seance['lieu'],
+                                seance['URL_photo'] ?? '', // Handle null value
+                            lieu: seance['lieu'] ??
+                                'Lieu inconnu', // Handle null value
                             seanceId: seance['id'].toString(),
                             userId:
                                 widget.connectedUserData['userId'].toString(),

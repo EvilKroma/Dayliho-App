@@ -28,9 +28,8 @@ class Seances extends StatelessWidget {
                   duree: _calculerDuree(seance['dateDebut'], seance['dateFin']),
                   titre: seance['titre'] ?? 'N/A',
                   description: seance['description'] ?? 'Aucune description',
-                  imagePath: seance['URL_photo'],
-                  lieu:
-                      seance['lieu'], // Or use seance['imagePath'] if available
+                  imagePath: seance['URL_photo'] ?? '', // Handle null value
+                  lieu: seance['lieu'] ?? 'Lieu inconnu', // Handle null value
                   seanceId: seance['id'].toString(), // Ajout du seanceId
                   userId: userId, // Pass userId to CarteSeance
                 );
