@@ -176,6 +176,7 @@ class _AccueilState extends State<Accueil> {
                   child: Center(
                     child: Text(
                       'Votre plateforme de sport en ligne',
+                      textAlign: TextAlign.center, // Ensure text is centered
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -186,6 +187,7 @@ class _AccueilState extends State<Accueil> {
                 ),
               ),
             ),
+
             // Titre des séances réservées
             // Affichage des séances réservées
           ],
