@@ -2,6 +2,7 @@
 
 Dayliho App est un projet de création d'une application mobile connectée à notre site web du même nom.
 Sur le site, des coachs sportifs publient des séances de sport, qui sont ensuite répertoriées sur l'application mobile. Via l'application, des joueurs peuvent s'y inscrire pour réserver leur place.
+
 Repo du site : https://github.com/ByKan77/Dayliho
 
 ## Lancement
