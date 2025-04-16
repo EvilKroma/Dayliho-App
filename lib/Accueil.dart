@@ -75,6 +75,11 @@ class _AccueilState extends State<Accueil> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        title: Text('Accueil'),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [

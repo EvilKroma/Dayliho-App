@@ -8,36 +8,44 @@ class Seances extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<dynamic>>(
-      future: Seance.getSeances(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text("Erreur: ${snapshot.error}"));
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(child: Text("Aucune donnée disponible"));
-        } else {
-          return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: snapshot.data!.map((seance) {
-                return CarteSeance(
-                  date: _extraireDate(seance['dateDebut']), // Pass the date
-                  heureDebut: _extraireHeure(seance['dateDebut']),
-                  duree: _calculerDuree(seance['dateDebut'], seance['dateFin']),
-                  titre: seance['titre'] ?? 'N/A',
-                  description: seance['description'] ?? 'Aucune description',
-                  imagePath: seance['URL_photo'] ?? '', // Handle null value
-                  lieu: seance['lieu'] ?? 'Lieu inconnu', // Handle null value
-                  seanceId: seance['id'].toString(), // Ajout du seanceId
-                  userId: userId, // Pass userId to CarteSeance
-                );
-              }).toList(),
-            ),
-          );
-        }
-      },
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        title: Text('Séances'),
+      ),
+      body: FutureBuilder<List<dynamic>>(
+        future: Seance.getSeances(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text("Erreur: ${snapshot.error}"));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(child: Text("Aucune donnée disponible"));
+          } else {
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: snapshot.data!.map((seance) {
+                  return CarteSeance(
+                    date: _extraireDate(seance['dateDebut']), // Pass the date
+                    heureDebut: _extraireHeure(seance['dateDebut']),
+                    duree:
+                        _calculerDuree(seance['dateDebut'], seance['dateFin']),
+                    titre: seance['titre'] ?? 'N/A',
+                    description: seance['description'] ?? 'Aucune description',
+                    imagePath: seance['URL_photo'] ?? '', // Handle null value
+                    lieu: seance['lieu'] ?? 'Lieu inconnu', // Handle null value
+                    seanceId: seance['id'].toString(), // Ajout du seanceId
+                    userId: userId, // Pass userId to CarteSeance
+                  );
+                }).toList(),
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 

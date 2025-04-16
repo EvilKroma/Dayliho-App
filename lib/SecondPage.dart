@@ -37,18 +37,7 @@ class _SecondPageState extends State<SecondPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white, // Set background color to white
-      appBar: AppBar(
-        title: Center(
-          child: Text(
-            "Dayliho",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.orange,
-            ),
-          ),
-        ),
-        automaticallyImplyLeading: false, // Remove the back arrow
-      ),
+
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
           _pageController.jumpToPage(index);

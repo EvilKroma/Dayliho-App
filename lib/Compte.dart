@@ -10,6 +10,11 @@ class Compte extends StatelessWidget {
     var userId = connectedUserData['userId'].toString();
 
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        title: Text('Compte'),
+      ),
       backgroundColor: Colors.white,
       body: FutureBuilder<Map<String, dynamic>>(
         future: CompteApi.getCompteData(userId),
