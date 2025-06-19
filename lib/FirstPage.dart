@@ -13,6 +13,7 @@ class _FirstPageState extends State<FirstPage> {
   final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
   final TextEditingController _userEmail = TextEditingController();
   final TextEditingController _userPassword = TextEditingController();
+  bool _obscurePassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -52,10 +53,23 @@ class _FirstPageState extends State<FirstPage> {
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 30),
               child: TextFormField(
                 controller: _userPassword,
-                decoration: const InputDecoration(
+                obscureText: _obscurePassword,
+                decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   icon: Icon(Icons.lock_outline_rounded),
                   label: Text('Mot de passe'),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscurePassword
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    },
+                  ),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
