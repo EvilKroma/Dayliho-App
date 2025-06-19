@@ -86,13 +86,43 @@ class BookSeance {
         headers: {'Content-Type': 'application/json'},
       );
 
-      if (res.statusCode == 200) {
-        return jsonDecode(res.body);
+      print('Status code: ${res.statusCode}');
+      print('Response body: ${res.body}');
+
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        // Si la réponse est vide ou null, retourner un message de succès
+        if (res.body.isEmpty || res.body == 'null') {
+          return {'success': true, 'message': 'Réservé avec succès'};
+        }
+        
+        try {
+          return jsonDecode(res.body);
+        } catch (e) {
+          // Si le JSON ne peut pas être décodé, retourner un message de succès
+          return {'success': true, 'message': 'Réservé avec succès'};
+        }
+      } else if (res.statusCode == 409) {
+        // Conflit - probablement déjà réservé
+        return {'success': false, 'message': 'Cette séance est déjà réservée'};
+      } else if (res.statusCode == 404) {
+        // Séance non trouvée
+        return {'success': false, 'message': 'Séance non trouvée'};
       } else {
-        throw Exception('Erreur lors de la réservation de la séance.');
+        // Autres erreurs
+        String errorMessage = 'Erreur lors de la réservation de la séance.';
+        try {
+          var errorResponse = jsonDecode(res.body);
+          if (errorResponse.containsKey('message')) {
+            errorMessage = errorResponse['message'];
+          }
+        } catch (e) {
+          // Si on ne peut pas décoder l'erreur, utiliser le message par défaut
+        }
+        return {'success': false, 'message': errorMessage};
       }
     } catch (err) {
-      throw Exception(err.toString());
+      print('Exception in bookSeance: $err');
+      return {'success': false, 'message': 'Erreur de connexion: $err'};
     }
   }
 }

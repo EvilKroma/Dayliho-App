@@ -169,14 +169,25 @@ class CarteSeance extends StatelessWidget {
                         try {
                           var response =
                               await BookSeance.bookSeance(userId, seanceId);
+
+                          // Vérifier si la réponse indique un succès ou une erreur
+                          bool isSuccess = response['success'] ?? false;
+                          String message =
+                              response['message'] ?? 'Opération terminée';
+
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                                content: Text(response['message'] ??
-                                    'Réservé avec succès')),
+                              content: Text(message),
+                              backgroundColor:
+                                  isSuccess ? Colors.green : Colors.red,
+                            ),
                           );
                         } catch (e) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Erreur: $e')),
+                            SnackBar(
+                              content: Text('Erreur: $e'),
+                              backgroundColor: Colors.red,
+                            ),
                           );
                         }
                       },
